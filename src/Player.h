@@ -15,7 +15,8 @@ public:
 
 	virtual void spawn(ofVec2f pos);
 	virtual void kill();
-	virtual void draw();
 	virtual void simulation();
-
+	
+	virtual void draw();
+	ofImage texBody;
 };

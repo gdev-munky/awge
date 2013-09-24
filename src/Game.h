@@ -19,9 +19,15 @@ class AW : public ofBaseApp {
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-		ofCamera cam;
 		Player player;
-		string strDeb;
+		ofSoundPlayer main_theme;
+
+		// debug info
+		bool drawDebugInfo;
+		string strDeb; 
 		
 		float counter;
+
+		//Состояния клавиш (Munky)
+		bool bMoveLeft, bMoveUp, bMoveRight;
 };

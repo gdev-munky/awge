@@ -1,7 +1,6 @@
 #include "ofMain.h"
 
-class Landscape
-{
+class Landscape {
 public:
 	float	getHeightAtX(float worldX);	
 	void	draw(float playerX);
@@ -10,6 +9,9 @@ public:
 	float	blockSize;
 	int		width;
 	float	worldSize;
+
+	ofImage texBlock;
+	string	texPath;
 
 private:
 	int*	height;

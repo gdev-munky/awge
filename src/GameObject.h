@@ -19,15 +19,14 @@ public:
 	ofVec2f	position;
 	bool	isLive;
 	int		health;
-	double mass;
+	double	mass;
 	double	friction;
 	bool	onGround;
 		
 	//ֻאםהראפע
 	Landscape* land;
 
-	virtual void jump()
-	{
+	virtual void jump()	{
 		if (onGround) applyForce(ofVec2f(0, -12000));
 	}
 };
