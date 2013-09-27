@@ -12,8 +12,8 @@ void Landscape::generate(int _width, int minBlocks, int maxBlocks)
 
 	for (int x=1; x < width*2; x++)
 	{
-		//высота отличается от предыдущей не более чем на 2 блока
-		height[x] = int(floor(ofRandom(-2,2))) + last;
+		//высота отличается от предыдущей не более чем на 3 блока
+		height[x] = int(floor(ofRandom(-3,3))) + last;
 		if (height[x] > maxBlocks) 
 			height[x] = maxBlocks;
 		else if (height[x] < minBlocks) 
@@ -46,39 +46,22 @@ float Landscape::getHeightAtX(float x) // f(0) not exist
 void Landscape::draw(float playerX)
 {
 	int x=1, y=getHeightAtX(x);
-	//TODO: нарисовать блокИ, входящие на экран
-	// дай мне Х и Y - нарисую 
-	string strDeb = "playerX="+ofToString(playerX)+" width="+ofToString(width)+
-		" worldSize="+ofToString(worldSize)+" height[0]="+ofToString(height[0]) + "\n" +
-		"getHeight(0)="+ofToString(getHeightAtX(1));
-	ofDrawBitmapString(strDeb, 50, 100);
 
-	/*
-	for(float i = playerX-width; i < playerX+width+1; i += blockSize) 
-		for(int j = 0; j <= getHeightAtX(i)/blockSize; j++)
-			texBlock.draw(i, getHeightAtX(i)-j*blockSize);
-			*/
 	int ax = int(floor(playerX/blockSize)) + width;
 	int ww = ofGetScreenWidth()/blockSize;
 	int sx = max(0, ax-ww);
 	int ex = min(width*2, ax+ww);
 	float bs = blockSize/2;
 	float my = ofGetWindowHeight();
-	ofDrawBitmapString(">>"+ofToString(ax)+", ["+ofToString(sx)+", "+ofToString(ex) + "], my="+ofToString(my), 450, 150);
 	float blockX;
+
 	for( int x = sx; x < ex; x++ )
 	{
-		blockX = (x - width) * blockSize - playerX;
-		glBegin(GL_QUADS);
-			glColor3f(0.8, 0, 0);
-			glVertex2f(blockX-bs, my);
-			glColor3f(0, 0, 0.8);
-			glVertex2f(blockX+bs, my);
-			glColor3f(0.8, 0.8, 0);
-			glVertex2f(blockX+bs, my - height[x]*blockSize);
-			glColor3f(0.8, 1.0, 0.8);
-			glVertex2f(blockX-bs, my - height[x]*blockSize);
-		glEnd();
+		blockX = (x - width) * blockSize - playerX + ofGetScreenWidth()/2;
+		ofSetColor(255);	
+		for( int y = 1; y <= height[x]; y++ )
+		{
+			texBlock.draw(blockX, my-y*blockSize, blockSize, blockSize);
+		}
 	}
-	ofDrawBitmapString(">>"+ofToString(blockX), 450, 175);
 }

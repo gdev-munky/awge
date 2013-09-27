@@ -1,9 +1,12 @@
+#ifndef _GAMEobJECT_H_
+#define _GAMEobJECT_H_
+
 #include "ofMain.h"
 #include "Landscape.h"
 
-enum { LEFT, RIGHT, UP, DOWN };
+enum { LEFT, RIGHT, UP, DOWN, K_SHIFT };
 
-class GameObject {
+class BaseEntity {
 public:
 	
 	void applyForce(ofVec2f force);
@@ -22,11 +25,22 @@ public:
 	double	mass;
 	double	friction;
 	bool	onGround;
-		
+
+	ofImage texBody, texBodyMirror;
+	ofImage* texHands;
+	ofImage* texHandsMirror;
+	bool	bOrientedLeft;
+
 	//ֻאםהראפע
 	Landscape* land;
 
 	virtual void jump()	{
-		if (onGround) applyForce(ofVec2f(0, -12000));
+		if (onGround) 
+		{
+			applyForce(ofVec2f(0, -12000));
+			onGround = false;
+		}
 	}
 };
+
+#endif

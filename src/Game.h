@@ -1,6 +1,9 @@
-#pragma once
+#ifndef _GAME_H_
+#define _GAME_H_
 
 #include "Player.h"
+#include "BaseMonster.h"
+#include "Monster1.h"
 
 class AW : public ofBaseApp {
 
@@ -19,8 +22,10 @@ class AW : public ofBaseApp {
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-		Player player;
+		void captureMouseMove();
+
 		ofSoundPlayer main_theme;
+		Player player;
 
 		// debug info
 		bool drawDebugInfo;
@@ -29,5 +34,9 @@ class AW : public ofBaseApp {
 		float counter;
 
 		//Состояния клавиш (Munky)
-		bool bMoveLeft, bMoveUp, bMoveRight;
+		bool bMoveLeft, bMoveUp, bMoveRight, bMoveShift;
+
+		vector<Monster1> mobs;
 };
+
+#endif

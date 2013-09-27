@@ -85,6 +85,9 @@
     <ClCompile Include="src\Landscape.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\BaseMonster.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -516,6 +519,12 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Landscape.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseMonster.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Monster1.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

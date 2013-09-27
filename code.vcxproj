@@ -104,6 +104,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\BaseMonster.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\Landscape.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -134,6 +135,7 @@
     <ClCompile Include="src\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\BaseMonster.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="..\..\of_v0.8.0_vs_release\addons\ofxGui\src\ofxBaseGui.h" />
     <ClInclude Include="..\..\of_v0.8.0_vs_release\addons\ofxGui\src\ofxButton.h" />
@@ -247,6 +249,7 @@
     <ClInclude Include="..\..\of_v0.8.0_vs_release\addons\ofxXmlSettings\libs\tinyxml.h" />
     <ClInclude Include="src\GameObject.h" />
     <ClInclude Include="src\Landscape.h" />
+    <ClInclude Include="src\Monster1.h" />
     <ClInclude Include="src\Player.h" />
   </ItemGroup>
   <ItemGroup>

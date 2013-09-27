@@ -29,20 +29,21 @@ ofVec2f Player::getSpeed() {
 
 void Player::movingOn(int direction) {
 	// Types defined in GameObjects.h
+	
 	switch(direction) {
 	case LEFT:
-		speedI++;
-		if (speedI==stepSpeed) speedI=0;
-		//что за хуня??? сверху от этой строчки
-		speed.x = max( -stepSpeed, speed.x - stepSpeed*speedI );
+		applyForce(ofVec2f(onGround? -400 : -40,0));
 		break;
 	case RIGHT:
-		speedI++;
-		if (speedI==stepSpeed) speedI=0;
-		speed.x = min( stepSpeed, speed.x + stepSpeed*speedI );
+		applyForce(ofVec2f(onGround? 400 : 40,0));
 		break;
 	case UP:
-		jump();
+		if (onGround)
+			jump();
+	case K_SHIFT:
+		if ( onGround && (abs(speed.x)>20 ) && (abs(speed.x)<50) )
+			if(speed.x > 0) speed.x += 20;
+			else speed.x -= 20;
 		break;
 	}
 }
@@ -50,12 +51,13 @@ void Player::movingOn(int direction) {
 void Player::spawn(ofVec2f pos) {
 	position = pos;
 	setSpeed(0, 0);
-	stepSpeed = 60;
+	stepSpeed = 150;
 	isLive = true;
 	health = 100;
-	sizeBox.x = 40;
-	sizeBox.y = 80;
+	sizeBox.x = 94;
+	sizeBox.y = 192;
 	mass = 80.0;
+	bOrientedLeft = false;
 }
 
 void Player::kill() {
@@ -65,33 +67,70 @@ void Player::kill() {
 	health = 0;
 }
 
-void Player::draw() {
-	glBegin(GL_QUADS);
-	glColor3f(0.8, 0, 0);
-		glVertex2f(ofGetWindowWidth()/2-sizeBox.x/2, position.y-sizeBox.y/2);
-		glColor3f(0, 0, 0.8);
-		glVertex2f(ofGetWindowWidth()/2+sizeBox.x/2, position.y-sizeBox.y/2);
-		glColor3f(0.8, 0.8, 0);
-		glVertex2f(ofGetWindowWidth()/2+sizeBox.x/2, position.y+sizeBox.y/2);
-		glColor3f(0.8, 1.0, 0.8);
-		glVertex2f(ofGetWindowWidth()/2-sizeBox.x/2, position.y+sizeBox.y/2);
-	glEnd();
-	ofSetColor(255);
+void Player::draw() 
+{
+	if (bOrientedLeft)
+	{
+		texBodyMirror.draw(ofGetWindowWidth()/2-sizeBox.x/2, position.y-sizeBox.y/2);
+		
+		glTranslated(ofGetWindowWidth()/2, position.y+16, 0);
+		glRotated(angle,0,0,1);
+		texHandsMirror->draw(-99, -33);
+		glRotated(-angle,0,0,1);
+		glTranslated(-ofGetWindowWidth()/2, -position.y-16, 0);
+	}
+	else
+	{
+		texBody.draw(ofGetWindowWidth()/2-sizeBox.x/2, position.y-sizeBox.y/2);
 
-	//Отладьте текстуры - потом будете коментить старый код)
-	texBody.draw(ofGetWindowWidth()/2, position.y);
+		glTranslated(ofGetWindowWidth()/2, position.y+16, 0);
+		glRotated(angle,0,0,1);
+		texHands->draw(-66, -33);
+		glRotated(-angle,0,0,1);
+		glTranslated(-ofGetWindowWidth()/2, -position.y-16, 0);
+	}
 }
 
 void Player::simulation() {
 	if( !onGround )
 		speed.y += 9.8;
-
-	position = position + (speed/10);
+	/*if (speed.x < 0)
+		bOrientedLeft = true;
+	else if (speed.x>0)
+		bOrientedLeft = false;*/
 
 	double legsPos = position.y + sizeBox.y/2;
-	double maxHeight = float(ofGetScreenHeight())-land->getHeightAtX(position.x);
 
-	if (legsPos > maxHeight) {
+	//CHECK BOUNDS
+	if (position.x > 64*800-64) {
+		position.x = 64*800-64;
+		speed.x = min(.0f, speed.x);
+	}
+	if (position.x < -64*800+64) {
+		position.x = 64-64*800;
+		speed.x = max(.0f, speed.x);
+	}
+
+	double mhRight	= land->getHeightAtX(position.x+sizeBox.x/2);
+	double mhRight2 = land->getHeightAtX(position.x+sizeBox.x/2+speed.x/10);
+	double mhLeft	= land->getHeightAtX(position.x-sizeBox.x/2);
+	double mhLeft2	= land->getHeightAtX(position.x-sizeBox.x/2+speed.x/10);
+	double mhCenter = land->getHeightAtX(position.x);
+
+	double maxHeight = double(ofGetScreenHeight()) - max( mhCenter, max( mhLeft, mhRight ));
+
+	//check blocks (X)
+	if ((mhLeft2 > mhCenter) && (speed.x < 0) && (legsPos > double(ofGetScreenHeight())-mhLeft2))
+	{
+		speed.x = 0;
+	}
+	else 
+	if ((mhRight2 > mhCenter) && (speed.x > 0) && (legsPos > double(ofGetScreenHeight())-mhRight2))
+	{
+		speed.x = 0;
+	}
+	
+	if (legsPos >= maxHeight) {
 		if( speed.y > 0 )
 			speed.y = 0;
 		position.y = maxHeight - sizeBox.y/2;
@@ -102,9 +141,10 @@ void Player::simulation() {
 		friction = 0.999f;
 	}
 	
+	position = position + (speed/10);
 	speed *= friction;
 
 	if(isLive) {
-		if (health==0) kill();
+		if(health == 0) kill();
 	}
 }

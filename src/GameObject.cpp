@@ -1,6 +1,6 @@
 #include "GameObject.h"
 
-bool GameObject::isThisObject(int x, int y) {
+bool BaseEntity::isThisObject(int x, int y) {
 	if( x >= position.x && x <= (position.x + sizeBox.x) &&
 		y >= position.y && y <= (position.y + sizeBox.y) ) 
 		return 1;
@@ -9,7 +9,7 @@ bool GameObject::isThisObject(int x, int y) {
 		
 }
 
-void GameObject::applyForce(ofVec2f force)
+void BaseEntity::applyForce(ofVec2f force)
 {
 	speed += force/mass;
 }
