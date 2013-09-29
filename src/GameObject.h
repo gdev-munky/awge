@@ -17,6 +17,9 @@ public:
 	virtual void draw() { }
 	virtual void simulation() { }
 
+	///spread in degrees
+	//void fireBullets(ofVec2f vecSrc, float angle, int pellets, int dmg, float spread);
+
 	ofVec2f	sizeBox;
 	ofVec2f	speed;
 	ofVec2f	position;

@@ -58,6 +58,7 @@ void Player::spawn(ofVec2f pos) {
 	sizeBox.y = 192;
 	mass = 80.0;
 	bOrientedLeft = false;
+//	timeLeftToShoot = 0;
 }
 
 void Player::kill() {
@@ -94,10 +95,9 @@ void Player::draw()
 void Player::simulation() {
 	if( !onGround )
 		speed.y += 9.8;
-	/*if (speed.x < 0)
-		bOrientedLeft = true;
-	else if (speed.x>0)
-		bOrientedLeft = false;*/
+	
+	/*if (timeLeftToShoot > 0)
+		timeLeftToShoot -= 1/70;*/
 
 	double legsPos = position.y + sizeBox.y/2;
 

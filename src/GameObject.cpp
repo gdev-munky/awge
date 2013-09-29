@@ -13,3 +13,4 @@ void BaseEntity::applyForce(ofVec2f force)
 {
 	speed += force/mass;
 }
+

@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseMonster.h" />
+    <ClInclude Include="src\bullets.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="..\..\of_v0.8.0_vs_release\addons\ofxGui\src\ofxBaseGui.h" />
     <ClInclude Include="..\..\of_v0.8.0_vs_release\addons\ofxGui\src\ofxButton.h" />

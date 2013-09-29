@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "BaseMonster.h"
 #include "Monster1.h"
+#include "bullets.h"
 
 class AW : public ofBaseApp {
 
@@ -37,6 +38,9 @@ class AW : public ofBaseApp {
 		bool bMoveLeft, bMoveUp, bMoveRight, bMoveShift;
 
 		vector<Monster1> mobs;
+		void fireBulletsPlayer(ofVec2f vecSrc, float angle, int pellets, int dmg, float spread);
+		
+		ofImage texTracer;
 };
 
 #endif

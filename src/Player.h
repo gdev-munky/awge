@@ -28,6 +28,15 @@ public:
 	virtual void simulation();	
 	virtual void draw();
 	double angle;
+
+	float timeNextShoot;
+
+	ofVec2f getGunPos()
+	{
+		ofVec2f dd = sizeBox/2;
+		dd.y=-5;
+		return ofVec2f(99, 0).getRotated(angle) + position + dd;
+	}
 };
 
 #endif

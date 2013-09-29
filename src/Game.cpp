@@ -2,6 +2,7 @@
 	
 int lastKey;
 string msg;
+	bool MouseBtn;
 
 //--------------------------------------------------------------
 void AW::setup() 
@@ -23,7 +24,7 @@ void AW::setup()
 
 	//Sound.xml -----------------------------------------------------
 	main_theme.loadSound("sounds/korn_coming_undone.mp3");
-	main_theme.play();
+	//main_theme.play();
 
 	//player.xml -----------------------------------------------------
 	player.texBody.loadImage("textures/afanasich_stand.tga");
@@ -34,6 +35,11 @@ void AW::setup()
 	player.texBodyMirror.mirror(false, true);
 	player.texHands = &tpWpn_AKSU74;
 	player.texHandsMirror = &mtpWpn_AKSU74;
+	texTracer.loadImage("textures/tracer.png");
+	for(int i =0; i < MAX_BULLETS; i++)
+	{
+		bullets[i].texTracer = &texTracer;
+	}
 
 	player.land->texPath = "textures/ground.tga";
 	player.land->generate(ofGetWidth(), 1, 12);
@@ -72,27 +78,35 @@ void AW::update() {
 
 	ofVec2f pos = player.getPosition();
 	strDeb = "[ DEBUG INFO ]\n"
-			 ">> Player pos = (" + ofToString(pos.x) + "; " + ofToString(pos.y) + ")\n>> " + msg;
+			 ">> Player pos = (" + ofToString(pos.x) + "; " + ofToString(pos.y) + ")\n>> " + msg +
+			 "\n>> Shooted from '" + ofToString(bullets[0].s) + "' to '" + ofToString(bullets[0].e) + "'";
 	if (bMoveLeft)	player.movingOn(LEFT);
 	if (bMoveRight)	player.movingOn(RIGHT);
 	if (bMoveUp)	player.movingOn(UP);
 	if (bMoveShift) player.movingOn(K_SHIFT);
 
 	captureMouseMove();
-	
+	if (MouseBtn && player.timeNextShoot < ofGetSystemTime())
+	{
+
+		fireBulletsPlayer(player.getGunPos(), player.angle, 1, 20, 2);
+		player.timeNextShoot = ofGetSystemTime() + 100; //10 sh/s, 70 fps
+	}
 }	
 	
 //--------------------------------------------------------------
 void AW::draw() {
 	ofSetColor(255);
-	player.land->draw(player.position.x);
+	player.land->draw( player.position.x );
 	
-	for(int i=0; i<mobs.size(); i++)
+	for(int i = 0; i < mobs.size(); i++)
 		mobs[i].draw(player.getPosition().x);
 	
 	player.draw();
     // вывод информации на экран
 	ofSetColor(0, 0, 0);	
+	for(int i = 0; i < MAX_BULLETS; i++)
+		bullets[i].draw();
 
 	string strHel = "Health: " + ofToString(player.health);
 	ofSetColor(ofColor::red);
@@ -167,15 +181,16 @@ void AW::mouseMoved(int x, int y)
 void AW::mouseDragged(int x, int y, int button) {
 	
 }	
-	
 //--------------------------------------------------------------
-void AW::mousePressed(int x, int y, int button) {
+void AW::mousePressed(int x, int y, int button) 
+{
+	MouseBtn = true;
 	
 }
 
 //--------------------------------------------------------------
 void AW::mouseReleased(int x, int y, int button) {
-	
+	MouseBtn = false;
 }
 
 //--------------------------------------------------------------
@@ -194,4 +209,33 @@ void AW::gotMessage(ofMessage msg){
 //DEPRICATED
 void AW::dragEvent(ofDragInfo dragInfo){
 
+}
+
+
+void AW::fireBulletsPlayer(ofVec2f vecSrc, float angle, int pellets, int dmg, float spread)
+{
+	for (int i = 0; i < pellets; i++)
+	{
+		double a = angle + ofRandom(-spread, spread);
+		ofVec2f step = ofVec2f(16,0).rotate(a);
+		ofVec2f cur = vecSrc;
+		for (int j = 0; j < 50; j++)
+		{
+			cur += step;
+			for(int k = 0; k < mobs.size(); k++)
+			{
+				if (mobs[k].isThisObject(cur.x, cur.y))
+				{
+					mobs[k].health -= dmg;
+					msg = "I hited someone, k = " + ofToString(k);
+					//This will draw our bullet`s tracer over time
+					allocateBullet(	ofVec2f(vecSrc.x - player.position.x - player.sizeBox.x/2 + ofGetWindowWidth()/2, vecSrc.y),
+									ofVec2f(cur.x	 - player.position.x - player.sizeBox.x/2 + ofGetWindowWidth()/2, cur.y),
+									a);
+					goto escape;
+				}
+			}
+		}
+escape:;
+	}
 }
