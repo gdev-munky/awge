@@ -88,6 +88,9 @@
     <ClCompile Include="src\BaseMonster.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\animation.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -524,10 +527,19 @@
     <ClInclude Include="src\BaseMonster.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Monster1.h">
+    <ClInclude Include="src\bullets.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\bullets.h">
+    <ClInclude Include="src\animation.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\monster_slime_gold.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\monster_slime_green.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resources.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

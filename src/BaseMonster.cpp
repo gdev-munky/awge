@@ -1,6 +1,8 @@
 #include "BaseMonster.h"
+#include "resources.h"
 
-BaseMonster::BaseMonster(void) {
+BaseMonster::BaseMonster(void) 
+{
 
 }
 
@@ -68,21 +70,29 @@ void BaseMonster::kill() {
 	speed.y = 0;
 	speed.x = 0;
 	health = 0;
+	sndKill[1].play();
+	texBody = GFXN(iModelMonsterGay);
+	counter = ofRandom(3, 5);
 }
 
 void BaseMonster::draw(float playerX) 
 {	
 	if (bOrientedLeft)
-		texBodyMirror.draw(position.x+ofGetWindowWidth()/2-sizeBox.x/2-playerX, position.y-sizeBox.y/2);
+		texBodyMirror->draw(position.x+ofGetWindowWidth()/2-sizeBox.x/2-playerX, position.y-sizeBox.y/2, sizeBox.x, sizeBox.y);
 	else
-		texBody.draw(position.x+ofGetWindowWidth()/2-sizeBox.x/2-playerX, position.y-sizeBox.y/2);
+		texBody->draw(position.x+ofGetWindowWidth()/2-sizeBox.x/2-playerX, position.y-sizeBox.y/2, sizeBox.x, sizeBox.y);
 }
 
 void BaseMonster::simulation() 
 {	
-	if (bMoveLeft)	movingOn(LEFT);
-	if (bMoveRight)	movingOn(RIGHT);
-
+	if (counter > 0)
+	{
+		counter -= 1/ofGetFrameRate();
+		if (counter <= 0)
+		{
+			spawn(ofVec2f(player->getPosition().x + ofRandom(-2000, 2000), 0));
+		}
+	}
 	if( !onGround )
 		speed.y += 9.8;
 	bOrientedLeft = (speed.x < 0);
@@ -134,18 +144,23 @@ void BaseMonster::simulation()
 		onGround = false;
 		friction = 0.999f;
 	}
+	sndKill[1].play();
 	
 	position = position + (speed/10);
 	speed *= friction;
 	
 	if(isLive)
 	{
+		sndKill[1].play();
 		if(health <= 0) 
 		{
 			kill();
+			sndKill[1].play();
 			return;
 		}
 		runAI();
+		if (bMoveLeft)	movingOn(LEFT);
+		if (bMoveRight)	movingOn(RIGHT);
 	}
 }
 

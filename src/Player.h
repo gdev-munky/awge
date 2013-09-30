@@ -3,11 +3,11 @@
 
 #include "GameObject.h"
 
-static ofImage tpWpn_Pistol;
+/*static ofImage tpWpn_Pistol;
 static ofImage tpWpn_Magnum;
 static ofImage tpWpn_AKSU74;
 static ofImage mtpWpn_AKSU74;
-static ofImage tpWpn_Shotgun;
+static ofImage tpWpn_Shotgun;*/
 
 
 class Player : public BaseEntity {

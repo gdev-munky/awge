@@ -1,13 +1,17 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
+#include "resources.h"
 #include "Player.h"
 #include "BaseMonster.h"
-#include "Monster1.h"
 #include "bullets.h"
+#include "animation.h"
+
+#include "monster_slime_green.h"
+#include "monster_slime_gold.h"
+
 
 class AW : public ofBaseApp {
-
 	public:
 		void setup();
 		void update();
@@ -25,7 +29,7 @@ class AW : public ofBaseApp {
 
 		void captureMouseMove();
 
-		ofSoundPlayer main_theme;
+		ofSoundPlayer* main_theme;
 		Player player;
 
 		// debug info
@@ -37,10 +41,11 @@ class AW : public ofBaseApp {
 		//Состояния клавиш (Munky)
 		bool bMoveLeft, bMoveUp, bMoveRight, bMoveShift;
 
-		vector<Monster1> mobs;
+		vector<BaseMonster*> mobs;
 		void fireBulletsPlayer(ofVec2f vecSrc, float angle, int pellets, int dmg, float spread);
 		
-		ofImage texTracer;
+		//ofImage texTracer;
+		AnimatedSequence* animTracer;
 };
 
 #endif

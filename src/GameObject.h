@@ -3,6 +3,7 @@
 
 #include "ofMain.h"
 #include "Landscape.h"
+#include "resources.h"
 
 enum { LEFT, RIGHT, UP, DOWN, K_SHIFT };
 
@@ -29,7 +30,8 @@ public:
 	double	friction;
 	bool	onGround;
 
-	ofImage texBody, texBodyMirror;
+	ofImage* texBody;
+	ofImage* texBodyMirror;
 	ofImage* texHands;
 	ofImage* texHandsMirror;
 	bool	bOrientedLeft;
@@ -40,9 +42,15 @@ public:
 	virtual void jump()	{
 		if (onGround) 
 		{
-			applyForce(ofVec2f(0, -12000));
+			applyForce(ofVec2f(0, -75*mass));
 			onGround = false;
 		}
+	}
+
+	virtual void takeDamge(int damage, bool hostile)
+	{
+		health -= damage;
+		SFX(iSfxBulletHit)->play();
 	}
 };
 

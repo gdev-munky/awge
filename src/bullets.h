@@ -2,13 +2,13 @@
 #define _BULLETS_H_
 
 #include "ofMain.h"
+#include "animation.h"
 
 
 class bullet_t
 {
 public:
-	
-	ofImage* texTracer;
+	AnimatedSequence* texTracer;
 	ofVec2f s, e;
 	double a;
 	double l;
@@ -18,7 +18,7 @@ public:
 	{
 		s = from;
 		e = to;
-		life = 5+ofRandom(5, 25);
+		life = 6;
 		a = angle;
 		l = (e-s).length();
 	}
@@ -27,30 +27,20 @@ public:
 		if (life <= 0) return;
 		life--;
 		
-		//glColor4f(0, 0, 0, 0.25f);
+		glColor4f(1, 1, 1, 0.75f);
 		glTranslated(s.x, s.y, 0);
 		glRotated(a, 0, 0, 1);
-		texTracer->draw(0, -1, l, 2);
+		texTracer->getFrame()->draw(0, -1, l, 2);
 		glRotated(-a, 0, 0, 1);
 		glTranslated(-s.x, -s.y, 0);
-		glColor3f(1,1,1);
+		glColor3f(1, 1, 1);
 
-		/*
-		glLineWidth(5);
-		glBegin(GL_LINES);
-			glColor3f(0.1f, 0.01f, 0);			//glColor4f(0, 0, 0, 0);
- 			glVertex2f(s.x, s.y);//;			
-			glColor3f(1.0f, 0.8f,  0);			//glColor4f(1, 0.5f, 0, 1);
-			glVertex2f(e.x, e.y);//;
-		glEnd();
-		glColor3f(1,1,1);*/
+		texTracer->play(false);
 	}
 };
 
 #define MAX_BULLETS 64
-
 static bullet_t bullets[MAX_BULLETS];
-
 static void allocateBullet(ofVec2f src, ofVec2f tt, double a)
 {
 	for (int i = 0; i < MAX_BULLETS; i++)

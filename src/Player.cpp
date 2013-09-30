@@ -72,17 +72,17 @@ void Player::draw()
 {
 	if (bOrientedLeft)
 	{
-		texBodyMirror.draw(ofGetWindowWidth()/2-sizeBox.x/2, position.y-sizeBox.y/2);
+		texBodyMirror->draw(ofGetWindowWidth()/2-sizeBox.x/2, position.y-sizeBox.y/2);
 		
 		glTranslated(ofGetWindowWidth()/2, position.y+16, 0);
 		glRotated(angle,0,0,1);
-		texHandsMirror->draw(-99, -33);
+		texHandsMirror->draw(-66, -33);
 		glRotated(-angle,0,0,1);
 		glTranslated(-ofGetWindowWidth()/2, -position.y-16, 0);
 	}
 	else
 	{
-		texBody.draw(ofGetWindowWidth()/2-sizeBox.x/2, position.y-sizeBox.y/2);
+		texBody->draw(ofGetWindowWidth()/2-sizeBox.x/2, position.y-sizeBox.y/2);
 
 		glTranslated(ofGetWindowWidth()/2, position.y+16, 0);
 		glRotated(angle,0,0,1);

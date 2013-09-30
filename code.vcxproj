@@ -88,10 +88,11 @@
       <WarningLevel>Level3</WarningLevel>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);..\..\of_v0.8.0_vs_release\addons\ofxGui\libs;..\..\of_v0.8.0_vs_release\addons\ofxGui\src;..\..\of_v0.8.0_vs_release\addons\ofxNetwork\libs;..\..\of_v0.8.0_vs_release\addons\ofxNetwork\src;..\..\of_v0.8.0_vs_release\addons\ofxOpenCv\libs;..\..\of_v0.8.0_vs_release\addons\ofxOpenCv\src;..\..\of_v0.8.0_vs_release\addons\ofxOpenCv\libs\opencv;..\..\of_v0.8.0_vs_release\addons\ofxOpenCv\libs\opencv\include;..\..\of_v0.8.0_vs_release\addons\ofxOpenCv\libs\opencv\include\opencv;..\..\of_v0.8.0_vs_release\addons\ofxOpenCv\libs\opencv\include\opencv2;..\..\of_v0.8.0_vs_release\addons\ofxOpenCv\libs\opencv\include\opencv2\calib3d;..\..\of_v0.8.0_vs_release\addons\ofxOpenCv\libs\opencv\include\opencv2\contrib;..\..\of_v0.8.0_vs_release\addons\ofxOpenCv\libs\opencv\include\opencv2\core;..\..\of_v0.8.0_vs_release\addons\ofxOpenCv\libs\opencv\include\opencv2\features2d;..\..\of_v0.8.0_vs_release\addons\ofxOpenCv\libs\opencv\include\opencv2\flann;..\..\of_v0.8.0_vs_release\addons\ofxOpenCv\libs\opencv\include\opencv2\gpu;..\..\of_v0.8.0_vs_release\addons\ofxOpenCv\libs\opencv\include\opencv2\highgui;..\..\of_v0.8.0_vs_release\addons\ofxOpenCv\libs\opencv\include\opencv2\imgproc;..\..\of_v0.8.0_vs_release\addons\ofxOpenCv\libs\opencv\include\opencv2\legacy;..\..\of_v0.8.0_vs_release\addons\ofxOpenCv\libs\opencv\include\opencv2\ml;..\..\of_v0.8.0_vs_release\addons\ofxOpenCv\libs\opencv\include\opencv2\objdetect;..\..\of_v0.8.0_vs_release\addons\ofxOpenCv\libs\opencv\include\opencv2\ts;..\..\of_v0.8.0_vs_release\addons\ofxOpenCv\libs\opencv\include\opencv2\video;..\..\of_v0.8.0_vs_release\addons\ofxOpenCv\libs\opencv\lib;..\..\of_v0.8.0_vs_release\addons\ofxOpenCv\libs\opencv\lib\vs;..\..\of_v0.8.0_vs_release\addons\ofxXmlSettings\libs;..\..\of_v0.8.0_vs_release\addons\ofxXmlSettings\src</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
+      <BrowseInformation>false</BrowseInformation>
     </ClCompile>
     <Link>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -104,6 +105,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\animation.cpp" />
     <ClCompile Include="src\BaseMonster.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\Landscape.cpp" />
@@ -135,6 +137,7 @@
     <ClCompile Include="src\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\animation.h" />
     <ClInclude Include="src\BaseMonster.h" />
     <ClInclude Include="src\bullets.h" />
     <ClInclude Include="src\Game.h" />
@@ -250,8 +253,10 @@
     <ClInclude Include="..\..\of_v0.8.0_vs_release\addons\ofxXmlSettings\libs\tinyxml.h" />
     <ClInclude Include="src\GameObject.h" />
     <ClInclude Include="src\Landscape.h" />
-    <ClInclude Include="src\Monster1.h" />
+    <ClInclude Include="src\monster_slime_green.h" />
+    <ClInclude Include="src\monster_slime_gold.h" />
     <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\resources.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\of_v0.8.0_vs_release\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">

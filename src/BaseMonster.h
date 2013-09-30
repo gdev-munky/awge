@@ -5,7 +5,8 @@
 #include "Player.h"
 
 const int MAXMOBS = 50;
-static ofImage monster[3];
+static ofImage monster[3], monsterKill[3];
+static ofSoundPlayer sndKill[3];
 static int countM1, countM2, countM3;
 static int sizeM_x[3], sizeM_y[3];
 
@@ -34,6 +35,9 @@ public:
 		bool bMoveLeft, bMoveUp, bMoveRight;
 
 	Player* player;
+
+	float counter;
+
 };
 
 #endif
