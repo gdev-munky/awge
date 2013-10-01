@@ -94,7 +94,7 @@ void AW::setup()
 	//Monsters.xml -----------------------------------------------------
 
 	ofVec2f pos;
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 15; i++)
 	{
 		pos = player.position;
 		if (ofRandom(0,100) < 75)
@@ -273,9 +273,9 @@ void AW::fireBulletsPlayer(ofVec2f vecSrc, float angle, int pellets, int dmg, fl
 	for (int i = 0; i < pellets; i++)
 	{
 		double a = angle + ofRandom(-spread, spread);
-		ofVec2f step = ofVec2f(8, 0).getRotated(a);
+		ofVec2f step = ofVec2f(4, 0).getRotated(a);
 		ofVec2f cur = vecSrc;
-		for (int j = 0; j < 150; j++)
+		for (int j = 0; j < 250; j++)
 		{
 			cur += step;
 			for(int k = 0; k < mobs_greenSlime.size(); k++)
@@ -305,6 +305,12 @@ void AW::fireBulletsPlayer(ofVec2f vecSrc, float angle, int pellets, int dmg, fl
 						goto escape;
 				}
 			}
+			if (player.land->getHeightAtX(cur.x-48) >= float(ofGetScreenHeight()) - cur.y)
+			{
+				//HIT GROUND
+				goto escape;
+			}
+
 		}
 escape:
 					//This will draw our bullet`s tracer over time
