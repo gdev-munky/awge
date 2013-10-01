@@ -30,6 +30,7 @@ public:
 	double angle;
 
 	float timeNextShoot;
+	float timeNextWalkSound;
 
 	ofVec2f getGunPos()
 	{

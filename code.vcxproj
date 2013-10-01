@@ -253,6 +253,7 @@
     <ClInclude Include="..\..\of_v0.8.0_vs_release\addons\ofxXmlSettings\libs\tinyxml.h" />
     <ClInclude Include="src\GameObject.h" />
     <ClInclude Include="src\Landscape.h" />
+    <ClInclude Include="src\monster_slime_blue.h" />
     <ClInclude Include="src\monster_slime_green.h" />
     <ClInclude Include="src\monster_slime_gold.h" />
     <ClInclude Include="src\Player.h" />

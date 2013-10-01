@@ -70,17 +70,17 @@ void BaseMonster::kill() {
 	speed.y = 0;
 	speed.x = 0;
 	health = 0;
-	sndKill[1].play();
 	texBody = GFXN(iModelMonsterGay);
+	texBodyMirror = GFXM(iModelMonsterGay);
 	counter = ofRandom(3, 5);
 }
 
 void BaseMonster::draw(float playerX) 
 {	
 	if (bOrientedLeft)
-		texBodyMirror->draw(position.x+ofGetWindowWidth()/2-sizeBox.x/2-playerX, position.y-sizeBox.y/2, sizeBox.x, sizeBox.y);
+		texBodyMirror.draw(position.x+ofGetWindowWidth()/2-sizeBox.x/2-playerX, position.y-sizeBox.y/2, sizeBox.x, sizeBox.y);
 	else
-		texBody->draw(position.x+ofGetWindowWidth()/2-sizeBox.x/2-playerX, position.y-sizeBox.y/2, sizeBox.x, sizeBox.y);
+		texBody.draw(position.x+ofGetWindowWidth()/2-sizeBox.x/2-playerX, position.y-sizeBox.y/2, sizeBox.x, sizeBox.y);
 }
 
 void BaseMonster::simulation() 
@@ -144,18 +144,15 @@ void BaseMonster::simulation()
 		onGround = false;
 		friction = 0.999f;
 	}
-	sndKill[1].play();
 	
 	position = position + (speed/10);
 	speed *= friction;
 	
 	if(isLive)
 	{
-		sndKill[1].play();
 		if(health <= 0) 
 		{
 			kill();
-			sndKill[1].play();
 			return;
 		}
 		runAI();

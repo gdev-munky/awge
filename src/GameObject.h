@@ -30,10 +30,10 @@ public:
 	double	friction;
 	bool	onGround;
 
-	ofImage* texBody;
-	ofImage* texBodyMirror;
-	ofImage* texHands;
-	ofImage* texHandsMirror;
+	ofImage texBody;
+	ofImage texBodyMirror;
+	ofImage texHands;
+	ofImage texHandsMirror;
 	bool	bOrientedLeft;
 
 	//Ëàíäøàôò
@@ -42,7 +42,7 @@ public:
 	virtual void jump()	{
 		if (onGround) 
 		{
-			applyForce(ofVec2f(0, -75*mass));
+			applyForce(ofVec2f(0, -150*mass));
 			onGround = false;
 		}
 	}
@@ -50,7 +50,7 @@ public:
 	virtual void takeDamge(int damage, bool hostile)
 	{
 		health -= damage;
-		SFX(iSfxBulletHit)->play();
+		SFX(iSfxBulletHit).play();
 	}
 };
 

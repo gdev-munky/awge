@@ -1,9 +1,9 @@
-#ifndef _MONSTER_SLIME_GOLD_H_
-#define _MONSTER_SLIME_GOLD_H_
+#ifndef _MONSTER_SLIME_BLUE_H_
+#define _MONSTER_SLIME_BLUE_H_
 
 #include "BaseMonster.h"
 
-class MonsterSlimeGold : public BaseMonster {
+class MonsterSlimeBlue : public BaseMonster {
 public:
 	float counterDamage;
 	int myFrame;
@@ -14,7 +14,7 @@ public:
 		sizeBox.x = 100*rnd;
 		sizeBox.y = 60*rnd;
 		health = 200*rnd;
-		mass = 90*rnd;
+		mass = 20*rnd;
 		myFrame = 0;
 	}
 
@@ -35,7 +35,7 @@ public:
 
 		if (dist > -sizeBox.x/2 && dist < sizeBox.x/2 && counterDamage <= 0)
 		{
-			player->takeDamge(1.25, true);
+			player->takeDamge(2.5, true);
 			counterDamage = 0.5f;//twice a second
 		}
 	}
@@ -51,25 +51,25 @@ public:
 		
 		if (isLive)
 		{
-			GFXA(iAnimMonsterSlimeGoldMove).current = myFrame;
-			GFXA(iAnimMonsterSlimeGoldMove).getFrame()->draw(
+			GFXA(iAnimMonsterSlimeBlueMove).current = myFrame;
+			GFXA(iAnimMonsterSlimeBlueMove).getFrame()->draw(
 				position.x + ofGetWindowWidth()/2 -sizeBox.x/2 -playerX,
 				position.y-sizeBox.y/2, sizeBox.x, sizeBox.y);
-			GFXA(iAnimMonsterSlimeGoldMove).play(bOrientedLeft);
-			myFrame = GFXA(iAnimMonsterSlimeGoldMove).current;
+			GFXA(iAnimMonsterSlimeBlueMove).play(bOrientedLeft);
+			myFrame = GFXA(iAnimMonsterSlimeBlueMove).current;
 		}
 		else
 		{			
 			if (myFrame == 0)
 				return;
-			GFXA(iAnimMonsterSlimeGoldDie).current = myFrame;
-			GFXA(iAnimMonsterSlimeGoldDie).getFrame()->draw(
+			GFXA(iAnimMonsterSlimeBlueDie).current = myFrame;
+			GFXA(iAnimMonsterSlimeBlueDie).getFrame()->draw(
 				position.x + ofGetWindowWidth()/2 - sizeBox.x/2 - playerX,
 				position.y - sizeBox.y/2, sizeBox.x, sizeBox.y);
 			if (ofRandom(0,100)<25)
 			{
-				GFXA(iAnimMonsterSlimeGoldDie).play( false );
-				myFrame = GFXA(iAnimMonsterSlimeGoldDie).current;
+				GFXA(iAnimMonsterSlimeBlueDie).play( false );
+				myFrame = GFXA(iAnimMonsterSlimeBlueDie).current;
 			}
 		}		
 	}

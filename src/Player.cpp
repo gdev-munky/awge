@@ -72,21 +72,21 @@ void Player::draw()
 {
 	if (bOrientedLeft)
 	{
-		texBodyMirror->draw(ofGetWindowWidth()/2-sizeBox.x/2, position.y-sizeBox.y/2);
+		GFXM(iModelPlayer).draw(ofGetWindowWidth()/2-sizeBox.x/2, position.y-sizeBox.y/2);
 		
 		glTranslated(ofGetWindowWidth()/2, position.y+16, 0);
 		glRotated(angle,0,0,1);
-		texHandsMirror->draw(-66, -33);
+		GFXM(iModelWpnAKS74U).draw(-66, -33);
 		glRotated(-angle,0,0,1);
 		glTranslated(-ofGetWindowWidth()/2, -position.y-16, 0);
 	}
 	else
 	{
-		texBody->draw(ofGetWindowWidth()/2-sizeBox.x/2, position.y-sizeBox.y/2);
+		GFXN(iModelPlayer).draw(ofGetWindowWidth()/2-sizeBox.x/2, position.y-sizeBox.y/2);
 
 		glTranslated(ofGetWindowWidth()/2, position.y+16, 0);
 		glRotated(angle,0,0,1);
-		texHands->draw(-66, -33);
+		GFXN(iModelWpnAKS74U).draw(-66, -33);
 		glRotated(-angle,0,0,1);
 		glTranslated(-ofGetWindowWidth()/2, -position.y-16, 0);
 	}
@@ -110,6 +110,7 @@ void Player::simulation() {
 		position.x = 64-64*800;
 		speed.x = max(.0f, speed.x);
 	}
+
 
 	double mhRight	= land->getHeightAtX(position.x+sizeBox.x/2);
 	double mhRight2 = land->getHeightAtX(position.x+sizeBox.x/2+speed.x/10);
@@ -143,8 +144,18 @@ void Player::simulation() {
 	
 	position = position + (speed/10);
 	speed *= friction;
+	
+	if (abs(speed.length()) > 1.0f && timeNextWalkSound <= 0 && onGround)
+	{
+		timeNextWalkSound = 35.0f/(speed.x+100);
+		SFX(iSfxWalkDirt + int(ofRandom(0,2))).play();
+	}
+	if (!onGround)
+		timeNextWalkSound = 0;
+	else
+		timeNextWalkSound -= 1/ofGetFrameRate();
 
 	if(isLive) {
-		if(health == 0) kill();
+		if(health <= 0) kill();
 	}
 }

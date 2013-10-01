@@ -4,6 +4,10 @@
 #include "ofMain.h"
 #include "animation.h"
 
+#define MAX_GFX	20
+#define MAX_SFX	10
+#define MAX_ANI	10
+
 class ResStore
 {
 public:
@@ -11,11 +15,11 @@ public:
 	int ani_count;
 	int sfx_count;
 
-	vector<ofImage*> gfx;
-	vector<ofImage*> gfx_m;
-	vector<AnimatedSequence*> gfx_a;	
+	ofImage gfx[MAX_GFX];
+	ofImage gfx_m[MAX_GFX];
+	AnimatedSequence gfx_a[MAX_ANI];	
 
-	vector<ofSoundPlayer*> sfx;
+	ofSoundPlayer sfx[MAX_SFX];
 
 	ResStore(){}
 	~ResStore(){}
@@ -26,15 +30,15 @@ public:
 		ofImage img2 = ofImage(fname);
 		img2.mirror(mV, mH);
 
-		gfx.push_back(		&img	);
-		gfx_m.push_back(	&img2	);
+		gfx[gfx_count] = img;
+		gfx_m[gfx_count] = 	img2;
 		gfx_count++;
 		return gfx_count - 1;
 	}
 
 	int precacheANI(string fname0, string fname1, int c)
 	{
-		gfx_a.push_back(&AnimatedSequence(fname0, fname1, c));
+		gfx_a[ani_count] = AnimatedSequence(fname0, fname1, c);
 		ani_count++;
 		return ani_count - 1;
 	}
@@ -43,37 +47,42 @@ public:
 	{
 		ofSoundPlayer sp = ofSoundPlayer();
 		sp.loadSound(fname);
-		sfx.push_back(&sp);
+		sp.setVolume(1.0f);
+		sfx[sfx_count] = sp;
 		sfx_count++;
 		return sfx_count - 1;
 	}
 };
 
-static ResStore rStore;
-//Указатель на статичную текстуру индекса i
-#define GFXN(i) rStore.gfx[i]
+extern ResStore rStore;
+//Статичная текстура индекса i
+#define GFXN(i) (rStore.gfx[i])
 
-//Указатель на статичную отраженную текстуру индекса i
-#define GFXM(i) rStore.gfx_m[i]
+//Статичная отраженная текстура индекса i
+#define GFXM(i) (rStore.gfx_m[i])
 
-//Указатель на анимацию индекса i
-#define GFXA(i) rStore.gfx_a[i]
+//Анимация индекса i
+#define GFXA(i) (rStore.gfx_a[i])
 
-//Указатель на звук индекса i
-#define SFX(i) rStore.sfx[i]
+//звук индекса i
+#define SFX(i) (rStore.sfx[i])
 
 //GFX------------------------------------------------------------
-static int iModelPlayer;
-static int iModelWpnAKS74U;
-static int iModelBackGround;
+extern  int iModelPlayer;
+extern  int iModelWpnAKS74U;
+extern  int iModelBackGround;
 //GFX - MONSTERS
-static int iModelMonsterSlimeGreen;
-static int iModelMonsterSlimeGold;
-static int iModelMonsterSlimeBlue;
-static int iModelMonsterGay;
+extern  int iModelMonsterGay;
+extern int iAnimMonsterSlimeGreenMove;
+extern int iAnimMonsterSlimeGreenDie;
+extern int iAnimMonsterSlimeGoldMove;
+extern int iAnimMonsterSlimeGoldDie;
+extern int iAnimMonsterSlimeBlueMove;
+extern int iAnimMonsterSlimeBlueDie;
 
 //SFX-----------------------------------------------------------
-static int iSfxMainTheme;
-static int iSfxBulletHit;
+extern  int iSfxMainTheme;
+extern  int iSfxBulletHit;
+extern  int iSfxWalkDirt;
 
 #endif

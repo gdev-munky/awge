@@ -9,6 +9,7 @@
 
 #include "monster_slime_green.h"
 #include "monster_slime_gold.h"
+#include "monster_slime_blue.h"
 
 
 class AW : public ofBaseApp {
@@ -19,13 +20,8 @@ class AW : public ofBaseApp {
 
 		void keyPressed(int key);
 		void keyReleased(int key);
-		void mouseMoved(int x, int y );
-		void mouseDragged(int x, int y, int button);
 		void mousePressed(int x, int y, int button);
 		void mouseReleased(int x, int y, int button);
-		void windowResized(int w, int h);
-		void dragEvent(ofDragInfo dragInfo);
-		void gotMessage(ofMessage msg);
 
 		void captureMouseMove();
 
@@ -41,11 +37,13 @@ class AW : public ofBaseApp {
 		//Состояния клавиш (Munky)
 		bool bMoveLeft, bMoveUp, bMoveRight, bMoveShift;
 
-		vector<BaseMonster*> mobs;
+		vector<MonsterSlimeGreen> mobs_greenSlime;
+		vector<MonsterSlimeGold> mobs_goldSlime;
+		vector<MonsterSlimeBlue> mobs_blueSlime;
 		void fireBulletsPlayer(ofVec2f vecSrc, float angle, int pellets, int dmg, float spread);
 		
 		//ofImage texTracer;
-		AnimatedSequence* animTracer;
+		AnimatedSequence animTracer;
 };
 
 #endif

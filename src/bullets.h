@@ -30,7 +30,8 @@ public:
 		glColor4f(1, 1, 1, 0.75f);
 		glTranslated(s.x, s.y, 0);
 		glRotated(a, 0, 0, 1);
-		texTracer->getFrame()->draw(0, -1, l, 2);
+		float width = ofRandom(0.5f, 2.0f);
+		texTracer->getFrame()->draw(0, -width, l, width*2);
 		glRotated(-a, 0, 0, 1);
 		glTranslated(-s.x, -s.y, 0);
 		glColor3f(1, 1, 1);

@@ -12,8 +12,8 @@ void Landscape::generate(int _width, int minBlocks, int maxBlocks)
 
 	for (int x=1; x < width*2; x++)
 	{
-		//высота отличается от предыдущей не более чем на 3 блока
-		height[x] = int(floor(ofRandom(-3,3))) + last;
+		//высота отличается от предыдущей не более чем на 2 блока
+		height[x] = int(floor(ofRandom(-2,2))) + last;
 		if (height[x] > maxBlocks) 
 			height[x] = maxBlocks;
 		else if (height[x] < minBlocks) 

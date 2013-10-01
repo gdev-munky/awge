@@ -542,6 +542,9 @@
     <ClInclude Include="src\resources.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\monster_slime_blue.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon2.rc" />

@@ -3,24 +3,58 @@
 int lastKey;
 string msg;
 bool MouseBtn;
+ofSoundPlayer sfxMainTheme;
+ofSoundPlayer sfxBulletHit;
 
+ ResStore rStore;
+
+//GFX------------------------------------------------------------
+ int iModelPlayer;
+ int iModelWpnAKS74U;
+ int iModelBackGround;
+//GFX - MONSTERS
+ int iModelMonsterGay;
+
+ int iAnimMonsterSlimeGreenMove;
+ int iAnimMonsterSlimeGreenDie;
+ int iAnimMonsterSlimeGoldMove;
+ int iAnimMonsterSlimeGoldDie;
+ int iAnimMonsterSlimeBlueMove;
+ int iAnimMonsterSlimeBlueDie;
+
+//SFX-----------------------------------------------------------
+ int iSfxMainTheme;
+ int iSfxBulletHit;
+ int iSfxFireAKS74U;
+ int iSfxWalkDirt;
 
 inline void precache()
 {
+	rStore = ResStore();
 	//GFX
 	rStore.precacheANI("textures/tracer", ".png", 6);
 	iModelPlayer				= rStore.precacheGFX("textures/afanasich_stand.tga", false, true);	
 	iModelWpnAKS74U				= rStore.precacheGFX("textures/wpn_aksu74.png", true, false);
 	iModelBackGround			= rStore.precacheGFX("textures/background.png", true, false);
 	
-	iModelMonsterSlimeGreen		= rStore.precacheGFX("textures/slime.png",		false, true);
-	iModelMonsterSlimeGold		= rStore.precacheGFX("textures/slime0.png",		false, true);
-	iModelMonsterSlimeBlue		= rStore.precacheGFX("textures/slime1.png",		false, true);
 	iModelMonsterGay			= rStore.precacheGFX("textures/monster1.gif",	false, true);
+
+	iAnimMonsterSlimeGreenMove  = rStore.precacheANI("textures/slime_move000", ".png", 10);
+	iAnimMonsterSlimeGreenDie	= rStore.precacheANI("textures/slime_die000", ".png", 22);
+	iAnimMonsterSlimeGoldMove	= rStore.precacheANI("textures/slime_move000", "_g.png", 10);
+	iAnimMonsterSlimeGoldDie	= rStore.precacheANI("textures/slime_die000", "_g.png", 22);
+	iAnimMonsterSlimeBlueMove	= rStore.precacheANI("textures/slime_move000", "_b.png", 10);
+	iAnimMonsterSlimeBlueDie	= rStore.precacheANI("textures/slime_die000", "_b.png", 22);
 
 	//SFX	
 	iSfxMainTheme				= rStore.precacheSFX("sounds/korn_coming_undone.mp3");
+	sfxMainTheme				= SFX(iSfxMainTheme);
 	iSfxBulletHit				= rStore.precacheSFX("sounds/death.wav");
+	sfxBulletHit				= SFX(iSfxBulletHit);
+	iSfxFireAKS74U				= rStore.precacheSFX("sounds/aks74u-1.wav");rStore.precacheSFX("sounds/aks74u-2.wav");
+	iSfxWalkDirt				= rStore.precacheSFX("sounds/pl_dirt1.wav");
+								  rStore.precacheSFX("sounds/pl_dirt2.wav");
+								  rStore.precacheSFX("sounds/pl_dirt3.wav");
 }
 
 //--------------------------------------------------------------
@@ -33,44 +67,23 @@ void AW::setup()
 
     //TODO: сделать ввод инфы из xml
 	//System.xml ------------------------------------------------------
-	ofSetWindowTitle("AWGE Alpha 0.1");
+	ofSetWindowTitle("Afanasich Alpha 0.2");
 	ofEnableAntiAliasing();                                          
 	ofSetVerticalSync(true);                                         
 	ofSetFrameRate(75);												 
-	//ofSetFullscreen(true);
+	ofSetFullscreen(true);
 	drawDebugInfo = true;
-	//precache();
-	//GFX
-	rStore.precacheANI("textures/tracer", ".png", 6);
-	iModelPlayer				= rStore.precacheGFX("textures/afanasich_stand.tga", false, true);	
-	iModelWpnAKS74U				= rStore.precacheGFX("textures/wpn_aksu74.png", true, false);
-	iModelBackGround			= rStore.precacheGFX("textures/background.png", true, false);
-	
-	iModelMonsterSlimeGreen		= rStore.precacheGFX("textures/slime.png",		false, true);
-	iModelMonsterSlimeGold		= rStore.precacheGFX("textures/slime0.png",		false, true);
-	iModelMonsterSlimeBlue		= rStore.precacheGFX("textures/slime1.png",		false, true);
-	iModelMonsterGay			= rStore.precacheGFX("textures/monster1.gif",	false, true);
-
-	//SFX	
-	iSfxMainTheme				= rStore.precacheSFX("sounds/korn_coming_undone.mp3");
-	iSfxBulletHit				= rStore.precacheSFX("sounds/death.wav");
-
-	player.texBody			 = GFXN(iModelPlayer);
-	player.texBodyMirror	 = GFXM(iModelPlayer);
-
-	player.texHands			 = GFXN(iModelWpnAKS74U);
-	player.texHandsMirror	 = GFXM(iModelWpnAKS74U);
-	
+	precache();
 
 	animTracer = GFXA(0);
 	for(int i =0; i < MAX_BULLETS; i++)
 	{
-		bullets[i].texTracer = animTracer;
+		bullets[i].texTracer = &animTracer;
 	}
 
 	player.land->texPath = "textures/ground.tga";
-	player.land->generate(10240, 1, 11);
-	player.land->blockSize = 64.0f;
+	player.land->generate(10240, 1, 15);
+	player.land->blockSize = 48.0f;
 
 	player_pos.x = 0;
 	player_pos.y = 0;
@@ -83,29 +96,54 @@ void AW::setup()
 	ofVec2f pos;
 	for (int i = 0; i < 10; i++)
 	{
-		pos = player.getPosition();
-		BaseMonster m;
-		if (ofRandom(0,100) < 50)
-			m = (BaseMonster)MonsterSlimeGreen();
-		else //if (ofRandom(0,100) < 50)
-			m = (BaseMonster)MonsterSlimeGold();		
-		
-
-		m.player = &player;
-		pos.x += ofRandom(-2048,2048);
-		pos.y = 0;
-		m.spawn( pos );
-		mobs.push_back(&m);
+		pos = player.position;
+		if (ofRandom(0,100) < 75)
+		{
+			MonsterSlimeGreen m = (MonsterSlimeGreen());
+			m.player = &player;
+			pos.x += ofRandom(-2048,2048);
+			pos.y = 0;
+			m.spawn( pos );
+			mobs_greenSlime.push_back(m);
+		}
+		else if (ofRandom(0,100) < 75)
+		{
+			MonsterSlimeGold m = (MonsterSlimeGold());	
+			m.player = &player;
+			pos.x += ofRandom(-2048,2048);
+			pos.y = 0;
+			m.spawn( pos );
+			mobs_goldSlime.push_back(m);	
+		}
+		else 
+		{
+			MonsterSlimeBlue m = (MonsterSlimeBlue());	
+			m.player = &player;
+			pos.x += ofRandom(-2048,2048);
+			pos.y = 0;
+			m.spawn( pos );
+			mobs_blueSlime.push_back(m);	
+		}
 	}
-	SFX(iSfxBulletHit)->play();
+	//sfxBulletHit.play();
 }	
 	
 //--------------------------------------------------------------
 void AW::update() {
 	
 	player.simulation();
-	for(int i=0; i<mobs.size(); i++)
-		mobs[i]->simulation();
+	for(int i=0; i<mobs_greenSlime.size(); i++)
+	{
+		mobs_greenSlime[i].simulation();
+	}
+	for(int i=0; i<mobs_goldSlime.size(); i++)
+	{
+		mobs_goldSlime[i].simulation();
+	}
+	for(int i=0; i<mobs_blueSlime.size(); i++)
+	{
+		mobs_blueSlime[i].simulation();
+	}
 
 	ofVec2f pos = player.getPosition();
 	strDeb = "[ DEBUG INFO ]\n"
@@ -120,7 +158,7 @@ void AW::update() {
 	captureMouseMove();
 	if (MouseBtn && counter <= 0)
 	{
-
+		SFX( iSfxFireAKS74U + int(ofRandom(0,1)) ).play();
 		fireBulletsPlayer(player.getGunPos(), player.angle, 1, 20, 2);
 		counter = 0.1f;
 	}
@@ -133,13 +171,23 @@ void AW::draw()
 	float flW = ofGetWindowWidth();
 	float flH = ofGetWindowHeight();
 	float delta = player.position.x-floor(player.position.x/flW)*flW;
-	GFXN(iModelBackGround)->draw(-flW-delta, 0, flW, flH);
-	GFXN(iModelBackGround)->draw(-delta, 0, flW, flH);
-	GFXN(iModelBackGround)->draw(flW-delta, 0, flW, flH);
+	GFXN(iModelBackGround).draw(-flW-delta, 0, flW, flH);
+	GFXN(iModelBackGround).draw(-delta, 0, flW, flH);
+	GFXN(iModelBackGround).draw(flW-delta, 0, flW, flH);
 	player.land->draw( player.position.x );
 	
-	for(int i = 0; i < mobs.size(); i++)
-		mobs[i]->draw(player.getPosition().x);
+	for(int i=0; i<mobs_greenSlime.size(); i++)
+	{
+		mobs_greenSlime[i].draw(player.position.x);
+	}
+	for(int i=0; i<mobs_goldSlime.size(); i++)
+	{
+		mobs_goldSlime[i].draw(player.position.x);
+	}
+	for(int i=0; i<mobs_blueSlime.size(); i++)
+	{
+		mobs_blueSlime[i].draw(player.position.x);
+	}
 	
 	player.draw();
     // вывод информации на экран
@@ -209,17 +257,6 @@ void AW::captureMouseMove()
 }
 
 //--------------------------------------------------------------
-//DEPRICATED
-void AW::mouseMoved(int x, int y) 
-{
-}	
-	
-//--------------------------------------------------------------
-//DEPRICATED
-void AW::mouseDragged(int x, int y, int button) {
-	
-}	
-//--------------------------------------------------------------
 void AW::mousePressed(int x, int y, int button) 
 {
 	MouseBtn = true;
@@ -231,25 +268,6 @@ void AW::mouseReleased(int x, int y, int button) {
 	MouseBtn = false;
 }
 
-//--------------------------------------------------------------
-//DEPRICATED
-void AW::windowResized(int w, int h) {
-
-}
-
-//--------------------------------------------------------------
-//DEPRICATED
-void AW::gotMessage(ofMessage msg){
-
-}
-
-//--------------------------------------------------------------
-//DEPRICATED
-void AW::dragEvent(ofDragInfo dragInfo){
-
-}
-
-
 void AW::fireBulletsPlayer(ofVec2f vecSrc, float angle, int pellets, int dmg, float spread)
 {
 	for (int i = 0; i < pellets; i++)
@@ -257,16 +275,34 @@ void AW::fireBulletsPlayer(ofVec2f vecSrc, float angle, int pellets, int dmg, fl
 		double a = angle + ofRandom(-spread, spread);
 		ofVec2f step = ofVec2f(8, 0).getRotated(a);
 		ofVec2f cur = vecSrc;
-		for (int j = 0; j < 50; j++)
+		for (int j = 0; j < 150; j++)
 		{
 			cur += step;
-			for(int k = 0; k < mobs.size(); k++)
+			for(int k = 0; k < mobs_greenSlime.size(); k++)
 			{
-				if (mobs[k]->isThisObject(cur.x, cur.y) && mobs[k]->health>0)
+				if (mobs_greenSlime[k].isThisObject(cur.x, cur.y) && mobs_greenSlime[k].health>0)
 				{
-					mobs[k]->health -= dmg;
-					sndKill[1].play();
-					goto escape;
+					mobs_greenSlime[k].takeDamge(20, true);
+					if (ofRandom(0,100) < 25)
+						goto escape;
+				}
+			}
+			for(int k = 0; k < mobs_goldSlime.size(); k++)
+			{
+				if (mobs_goldSlime[k].isThisObject(cur.x, cur.y) && mobs_goldSlime[k].health>0)
+				{
+					mobs_goldSlime[k].takeDamge(20, true);
+					if (ofRandom(0,100) < 35)
+						goto escape;
+				}
+			}
+			for(int k = 0; k < mobs_blueSlime.size(); k++)
+			{
+				if (mobs_blueSlime[k].isThisObject(cur.x, cur.y) && mobs_blueSlime[k].health>0)
+				{
+					mobs_blueSlime[k].takeDamge(20, true);
+					if (ofRandom(0,100) < 35)
+						goto escape;
 				}
 			}
 		}
