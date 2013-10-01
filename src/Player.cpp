@@ -159,3 +159,9 @@ void Player::simulation() {
 		if(health <= 0) kill();
 	}
 }
+
+void Player::takeDamge(int dmg, bool hostile)
+{
+	health-=dmg;
+	SFX(iSfxPain + int(ofRandom(0,2))).play();
+}

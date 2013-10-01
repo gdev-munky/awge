@@ -84,5 +84,6 @@ extern int iAnimMonsterSlimeBlueDie;
 extern  int iSfxMainTheme;
 extern  int iSfxBulletHit;
 extern  int iSfxWalkDirt;
+extern  int iSfxPain;
 
 #endif

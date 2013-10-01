@@ -32,6 +32,8 @@ public:
 	float timeNextShoot;
 	float timeNextWalkSound;
 
+	void takeDamge(int dmg, bool hostile);
+
 	ofVec2f getGunPos()
 	{
 		ofVec2f dd = sizeBox/2;

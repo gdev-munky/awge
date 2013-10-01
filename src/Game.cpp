@@ -27,6 +27,7 @@ ofSoundPlayer sfxBulletHit;
  int iSfxBulletHit;
  int iSfxFireAKS74U;
  int iSfxWalkDirt;
+ int iSfxPain;
 
 inline void precache()
 {
@@ -55,6 +56,9 @@ inline void precache()
 	iSfxWalkDirt				= rStore.precacheSFX("sounds/pl_dirt1.wav");
 								  rStore.precacheSFX("sounds/pl_dirt2.wav");
 								  rStore.precacheSFX("sounds/pl_dirt3.wav");
+	iSfxPain					= rStore.precacheSFX("sounds/pl_pain1.wav");
+								  rStore.precacheSFX("sounds/pl_pain2.wav");
+								  rStore.precacheSFX("sounds/pl_pain3.wav");
 }
 
 //--------------------------------------------------------------
@@ -273,9 +277,9 @@ void AW::fireBulletsPlayer(ofVec2f vecSrc, float angle, int pellets, int dmg, fl
 	for (int i = 0; i < pellets; i++)
 	{
 		double a = angle + ofRandom(-spread, spread);
-		ofVec2f step = ofVec2f(4, 0).getRotated(a);
+		ofVec2f step = ofVec2f(8, 0).getRotated(a);
 		ofVec2f cur = vecSrc;
-		for (int j = 0; j < 250; j++)
+		for (int j = 0; j < 150; j++)
 		{
 			cur += step;
 			for(int k = 0; k < mobs_greenSlime.size(); k++)
@@ -307,6 +311,9 @@ void AW::fireBulletsPlayer(ofVec2f vecSrc, float angle, int pellets, int dmg, fl
 			}
 			if (player.land->getHeightAtX(cur.x-48) >= float(ofGetScreenHeight()) - cur.y)
 			{
+				ofVec2f cur2 = cur - step/2;
+				if (player.land->getHeightAtX(cur2.x-48) >= float(ofGetScreenHeight()) - cur2.y)
+					cur = cur2;
 				//HIT GROUND
 				goto escape;
 			}
